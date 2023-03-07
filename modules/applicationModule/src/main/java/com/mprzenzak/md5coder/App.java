@@ -1,26 +1,26 @@
 package com.mprzenzak.md5coder;
 
+import com.mprzenzak.library.Coder;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.io.IOException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Stream;
 
-public class HashcodeCounter extends JFrame implements ActionListener {
+public class App extends JFrame implements ActionListener {
     private final JButton chooseFileButton;
     private final JFileChooser fileChooser;
 
-    public HashcodeCounter() {
+    public App() {
         chooseFileButton = new JButton("Choose File");
         chooseFileButton.addActionListener(this);
 
@@ -30,7 +30,7 @@ public class HashcodeCounter extends JFrame implements ActionListener {
         panel.add(chooseFileButton);
 
         add(panel);
-        setTitle("File Chooser Example");
+        setTitle("MD5 Hash Coder");
         setSize(300, 100);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -38,12 +38,13 @@ public class HashcodeCounter extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new HashcodeCounter();
+        new App();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == chooseFileButton) {
+            Coder coder = new Coder();
             int returnVal = fileChooser.showOpenDialog(this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -55,10 +56,10 @@ public class HashcodeCounter extends JFrame implements ActionListener {
 
                 try {
                     byte[] fileBytes = Files.readAllBytes(selectedFilePath);
-                    byte[] hashBytes = computeMD5Hash(fileBytes);
-                    String hashString = bytesToHexString(hashBytes);
+                    byte[] hashBytes = coder.computeMD5Hash(fileBytes);
+                    String hashString = coder.bytesToHexString(hashBytes);
                     Files.createDirectories(outputDirectory);
-                    Path matchingHashFile = findHashesForThisFile(outputDirectory.toString(), fileNameWithoutExtension, selectedFilePath.toAbsolutePath().toString());
+                    Path matchingHashFile = coder.findHashesForThisFile(outputDirectory.toString(), fileNameWithoutExtension, selectedFilePath.toAbsolutePath().toString());
 
                     if (matchingHashFile != null) {
                         List<String> fileLines = Files.readAllLines(matchingHashFile, StandardCharsets.UTF_8);
@@ -83,41 +84,5 @@ public class HashcodeCounter extends JFrame implements ActionListener {
                 }
             }
         }
-    }
-
-    public static Path findHashesForThisFile(String dir, String fileName, String selectedFilePath) throws IOException {
-        Path dirPath = Paths.get(dir);
-        try (Stream<Path> stream = Files.list(dirPath)) {
-            Path[] filesWithThisName = stream
-                    .filter(path -> path.getFileName().toString().contains(fileName))
-                    .sorted((file1, file2) -> Long.compare(file2.toFile().lastModified(), file1.toFile().lastModified()))
-                    .toArray(Path[]::new);
-
-            for (Path matchingHashFile : filesWithThisName) {
-                List<String> fileLines = Files.readAllLines(matchingHashFile, StandardCharsets.UTF_8);
-                if (fileLines.size() >= 2) {
-                    String absolutePath = fileLines.get(0);
-                    if (absolutePath.equals(selectedFilePath)) {
-                        return matchingHashFile;
-                    }
-                }
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    private byte[] computeMD5Hash(byte[] bytes) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        return md.digest(bytes);
-    }
-
-    private String bytesToHexString(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02X", b));
-        }
-        return sb.toString();
     }
 }
