@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-class JsonData {
+class JsonDataSong {
     private String created;
     private int count;
     private int offset;
