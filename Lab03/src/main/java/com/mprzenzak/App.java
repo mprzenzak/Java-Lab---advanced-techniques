@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
+import java.text.MessageFormat;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 public class App {
     private JFrame frame;
@@ -28,8 +28,16 @@ public class App {
     private QuestionType questionType;
     private String correctAnswer;
     private List<JRadioButton> radioButtons = new ArrayList<>();
+    private ResourceBundle bundle;
+    private Locale locale;
 
     public App() {
+        String language = "pl";
+        String country = "PL";
+
+        locale = new Locale(language, country);
+        bundle = ResourceBundle.getBundle("Messages", locale);
+
         initComponents();
     }
 
@@ -41,17 +49,20 @@ public class App {
         frame.setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2));
+        panel.setLayout(new GridLayout(4, 2));
         frame.add(panel, BorderLayout.CENTER);
 
-        showQuestionButton = new JButton("Show question");
-        submitButton = new JButton("Submit answer");
-        JButton showHintButton = new JButton("Show hint");
+        JButton polButton = new JButton("Wersja polska");
+        JButton engButton = new JButton("English version");
+
+        showQuestionButton = new JButton(bundle.getString("showQuestionButton"));
+        submitButton = new JButton(bundle.getString("submitButton"));
+        JButton showHintButton = new JButton(bundle.getString("showHintButton"));
 
         showQuestionButton.addActionListener(e -> {
             try {
                 check.setText("");
-                String answerFieldHintText = "Enter your answer here";
+                String answerFieldHintText = bundle.getString("answerFieldHintText");
                 answerField.setText(answerFieldHintText);
                 answerField.setForeground(Color.GRAY);
                 answerField.addFocusListener(new FocusListener() {
@@ -80,10 +91,34 @@ public class App {
         submitButton.addActionListener(e -> submitAnswer(questionType));
         showHintButton.addActionListener(e -> showHint());
 
+        polButton.addActionListener(e -> {
+            String language = "pl";
+            String country = "PL";
+
+            locale = new Locale(language, country);
+            bundle = ResourceBundle.getBundle("Messages", locale);
+
+            responsePanel.revalidate();
+            responsePanel.repaint();
+        });
+
+        engButton.addActionListener(e -> {
+            String language = "en";
+            String country = "US";
+
+            locale = new Locale(language, country);
+            bundle = ResourceBundle.getBundle("Messages", locale);
+
+            responsePanel.revalidate();
+            responsePanel.repaint();
+        });
+
         answerField.setPreferredSize(new Dimension(400, 20));
         answerField.setText("Enter your answer here");
         answerField.setForeground(Color.GRAY);
 
+        panel.add(polButton);
+        panel.add(engButton);
 
         panel.add(showQuestionButton);
         panel.add(submitButton);
@@ -122,6 +157,7 @@ public class App {
 
     private void updateResponsePanel() {
         responsePanel.removeAll();
+        radioButtons.clear();
         responsePanel.setLayout(new GridLayout());
 
         if (questionType == QuestionType.BAND_SONGS_NUMBER) {
@@ -178,23 +214,66 @@ public class App {
         json = sendGETRequest(url);
         String title = getTitleFromJson(json);
         correctAnswer = getArtistFromSongJson(json);
-        question.setText("<html>What is the name of the artist of the song:<br>\"" + title +"\"?</html>");
+
+        Object[] arguments;
+        String incorrectMessageTemplate = bundle.getString("who_is_song_artist");
+        MessageFormat messageFormat = new MessageFormat(incorrectMessageTemplate, locale);
+        arguments = new Object[]{title};
+        question.setText(messageFormat.format(arguments));
     }
 
     private void getRandomBand() throws IOException {
         URL url = new URL("https://musicbrainz.org/ws/2/artist/?query=type:group&fmt=json&limit=1&offset=" + (int) (Math.random() * 100000));
         json = sendGETRequest(url);
         songArtist = getArtistFromBandJson(json);
+
+        Object[] arguments;
+        MessageFormat messageFormat = null;
+
         switch (questionType) {
-            case BAND_SONGS_NUMBER -> {
+            case BAND_SONGS_NUMBER:{
+                String messageTemplate = bundle.getString("how_many_songs");
+                messageFormat = new MessageFormat(messageTemplate, locale);
                 correctAnswer = getNumberOfSongsFromBandJson(json);
-                question.setText("How many songs has " + songArtist + " released?");
+                break;
             }
-            case BAND_CAREER_START -> {
+            case BAND_CAREER_START:{
+                String messageTemplate = bundle.getString("career_start");
+                messageFormat = new MessageFormat(messageTemplate, locale);
                 correctAnswer = getCareerStartFromBandJson(json);
-                question.setText("When did the " + songArtist + " started career?");
+                break;
             }
         }
+        if (locale.getLanguage().equals("pl")) {
+            String pearsonTense = getPearsonTense(songArtist);
+            arguments = new Object[]{songArtist, pearsonTense};
+        } else {
+            arguments = new Object[]{songArtist};
+        }
+        question.setText(messageFormat.format(arguments));
+    }
+
+    private String getPearsonTense(String songArtist) {
+        String pearsonTense = null;
+        switch (questionType) {
+            case BAND_SONGS_NUMBER: {
+                if (songArtist.endsWith("a")) {
+                    pearsonTense = "wydała";
+                } else {
+                    pearsonTense = "wydał";
+                }
+                break;
+            }
+            case BAND_CAREER_START: {
+                if (songArtist.endsWith("a")) {
+                    pearsonTense = "rozpoczęła";
+                } else {
+                    pearsonTense = "respoczął";
+                }
+                break;
+            }
+        }
+        return pearsonTense;
     }
 
     private void submitAnswer(QuestionType questionType) {
@@ -207,44 +286,85 @@ public class App {
 
     private void submitBandCareerStartAnswer() {
         String answer = answerField.getText();
+        String message;
         if (answer.equals(correctAnswer)) {
-            check.setText("Correct!");
+            message = bundle.getString("correct_response");
         } else {
-            check.setText("Incorrect! The correct answer is: " + correctAnswer + ".");
+            Object[] arguments;
+            String incorrectMessageTemplate = bundle.getString("career_start_wrong_response");
+            MessageFormat messageFormat = new MessageFormat(incorrectMessageTemplate, locale);
+            arguments = new Object[]{correctAnswer};
+            message = messageFormat.format(arguments);
         }
+        check.setText(message);
     }
 
     private void submitBandSongsNumberAnswer() {
         String answer = getAnswerFromRadioButton();
+        String message;
+
         if (answer.equals(correctAnswer)) {
-            check.setText("Correct!");
+            message = bundle.getString("correct_response");
         } else {
-            check.setText("Incorrect! The correct answer is: " + correctAnswer + ".");
+            String incorrectMessageTemplate = bundle.getString("number_of_songs_wrong_response");
+            MessageFormat messageFormat = new MessageFormat(incorrectMessageTemplate, locale);
+            Object[] arguments;
+
+            if (locale.getLanguage().equals("pl")) {
+                String pluralizedForm = pluralizePolish(Integer.parseInt(correctAnswer), "utwór", "utwory", "utworów");
+                arguments = new Object[]{correctAnswer, pluralizedForm};
+            } else {
+                arguments = new Object[]{correctAnswer};
+            }
+            message = messageFormat.format(arguments);
         }
+        check.setText(message);
     }
 
     private void submitSongTitleAnswer() {
         String answer = answerField.getText();
+        String message;
+
         if (answer.equals(correctAnswer)) {
-            check.setText("Correct!");
+            message = bundle.getString("correct_response");
         } else {
-            check.setText("Incorrect! The correct answer is: " + correctAnswer + ".");
+            Object[] arguments;
+            String incorrectMessageTemplate = bundle.getString("song_title_wrong_response");
+            MessageFormat messageFormat = new MessageFormat(incorrectMessageTemplate, locale);
+            arguments = new Object[]{correctAnswer};
+            message = messageFormat.format(arguments);
+        }
+        check.setText(message);
+    }
+
+    private String pluralizePolish(int answer, String one, String few, String many) {
+        int n = answer % 100;
+        int remainderTen = answer % 10;
+
+        if (n > 10 && n < 20) {
+            return many;
+        } else if (remainderTen > 1 && remainderTen < 5) {
+            return few;
+        } else if (remainderTen == 1) {
+            return one;
+        } else {
+            return many;
         }
     }
 
-    private static String getTitleFromJson(String json) {
+    private String getTitleFromJson(String json) {
         Gson gson = new Gson();
         JsonDataSong jsonDataSong = gson.fromJson(json, JsonDataSong.class);
         return jsonDataSong.getReleases().get(0).getTitle();
     }
 
-    private static String getArtistFromSongJson(String json) {
+    private String getArtistFromSongJson(String json) {
         Gson gson = new Gson();
         JsonDataSong jsonDataSong = gson.fromJson(json, JsonDataSong.class);
         return jsonDataSong.getReleases().get(0).getArtistCredit().get(0).getName();
     }
 
-    private static String getNumberOfSongsFromBandJson(String json) {
+    private String getNumberOfSongsFromBandJson(String json) {
         Gson gson = new Gson();
         JsonDataBand jsonDataSong = gson.fromJson(json, JsonDataBand.class);
         return jsonDataSong.getArtists().get(0).getScore();
@@ -256,13 +376,13 @@ public class App {
         return jsonDataSong.getArtists().get(0).getLifeSpan().getBegin();
     }
 
-    private static String getArtistFromBandJson(String json) {
+    private String getArtistFromBandJson(String json) {
         Gson gson = new Gson();
         JsonDataBand jsonDataBand = gson.fromJson(json, JsonDataBand.class);
         return jsonDataBand.getArtists().get(0).getName();
     }
 
-    private static String sendGETRequest(URL url) throws IOException {
+    private String sendGETRequest(URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestProperty("Accept", "application/json");
 
@@ -277,7 +397,7 @@ public class App {
         return response.toString();
     }
 
-    public static QuestionType getRandomQuestionType() {
+    public QuestionType getRandomQuestionType() {
         QuestionType[] questionTypes = QuestionType.values();
         Random random = new Random();
         int randomIndex = random.nextInt(questionTypes.length);
