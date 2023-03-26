@@ -1,16 +1,52 @@
 package com.mprzenzak.application;
 
-public class CustomClassLoader extends ClassLoader {
+import java.io.*;
+import java.net.URL;
 
-    private final String classPath;
+public class CustomClassLoader extends ClassLoader implements AutoCloseable {
 
-    public CustomClassLoader(String classPath) {
-        this.classPath = classPath;
+    private final String classesPath;
+
+    public CustomClassLoader(URL basePath) {
+        this.classesPath = basePath.getPath();
     }
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        // Implementacja ładowania klasy z pliku .class
-        return null;
+        byte[] classData = loadClassData(name);
+        if (classData == null) {
+            throw new ClassNotFoundException("Class " + name + " not found.");
+        }
+        return defineClass("com.mprzenzak.processors." + name, classData, 0, classData.length);
+    }
+
+    private byte[] loadClassData(String className) {
+        String fileName = className.replace('.', File.separatorChar) + ".class";
+        File classFile = new File(classesPath, fileName);
+        if (!classFile.exists()) {
+            return null;
+        }
+
+        try (InputStream inputStream = new FileInputStream(classFile);
+             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead);
+            }
+
+            return byteArrayOutputStream.toByteArray();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 }

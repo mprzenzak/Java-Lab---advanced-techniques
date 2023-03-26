@@ -1,14 +1,8 @@
 package com.mprzenzak.processing;
 
 public class Status {
-
-    /**
-     * identyfikator zadania
-     */
     private final int taskId;
-    /**
-     * postêp przetwarzania w procentach
-     */
+
     private final int progress;
 
     public int getProgress() {
