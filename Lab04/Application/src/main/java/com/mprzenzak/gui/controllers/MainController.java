@@ -164,7 +164,6 @@ public class MainController implements Initializable {
                 }
             }
             Method getInfoMethod = c.getMethod("getInfo");
-            var a = (String) getInfoMethod.invoke(obj);
             return (String) getInfoMethod.invoke(obj);
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
                  InvocationTargetException e) {
