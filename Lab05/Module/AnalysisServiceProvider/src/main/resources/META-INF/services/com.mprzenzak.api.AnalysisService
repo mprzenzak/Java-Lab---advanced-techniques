@@ -1,0 +1,4 @@
+com.mprzenzak.analysisServiceProvider.KappaAnalysisService
+com.mprzenzak.analysisServiceProvider.AccuracyAnalysisService
+com.mprzenzak.analysisServiceProvider.MicroFOneAnalysisService
+com.mprzenzak.analysisServiceProvider.MCCAnalysisService
