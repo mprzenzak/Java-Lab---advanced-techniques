@@ -1,4 +1,10 @@
 package com.mprzenzak.lab06.respository;
 
-public class ServiceTypeRepository {
+import com.mprzenzak.lab06.models.Invoice;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ServiceTypeRepository extends JpaRepository<Invoice, Long> {
 }
+

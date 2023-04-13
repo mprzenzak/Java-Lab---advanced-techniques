@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj klienta</title>
+</head>
+<body>
+<h1>Dodaj klienta</h1>
+<form action="#" th:action="@{/add}" th:object="${client}" method="post">
+    <label for="firstName">Imię:</label>
+    <input type="text" id="firstName" th:field="*{firstName}"/>
+    <br/>
+    <label for="lastName">Nazwisko:</label>
+    <input type="text" id="lastName" th:field="*{lastName}"/>
+    <br/>
+    <label for="clientNumber">Numer klienta:</label>
+    <input type="text" id="clientNumber" th:field="*{clientNumber}"/>
+    <br/>
+    <input type="submit" value="Dodaj klienta"/>
+</form>
+</body>
+</html>
