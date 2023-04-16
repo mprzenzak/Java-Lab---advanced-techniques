@@ -3,7 +3,6 @@ package com.mprzenzak.lab06.controllers;
 import com.mprzenzak.lab06.enums.ServiceType;
 import com.mprzenzak.lab06.models.Client;
 import com.mprzenzak.lab06.models.Installation;
-import com.mprzenzak.lab06.repository.ClientRepository;
 import com.mprzenzak.lab06.repository.InstallationRepository;
 import com.mprzenzak.lab06.services.ClientService;
 import com.mprzenzak.lab06.services.InstallationService;

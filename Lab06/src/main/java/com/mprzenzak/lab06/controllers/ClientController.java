@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-//@RequestMapping("/clients")
 public class ClientController {
     private final ClientService clientService;
 

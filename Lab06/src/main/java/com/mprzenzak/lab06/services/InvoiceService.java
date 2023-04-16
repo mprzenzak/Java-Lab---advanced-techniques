@@ -21,13 +21,11 @@ import java.util.Set;
 @Service
 public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
-    private final InstallationRepository installationRepository;
     private final PaymentRepository paymentRepository;
     private final PriceListRepository priceListRepository;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, InstallationRepository installationRepository, PaymentRepository paymentRepository, PriceListRepository priceListRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, PaymentRepository paymentRepository, PriceListRepository priceListRepository) {
         this.invoiceRepository = invoiceRepository;
-        this.installationRepository = installationRepository;
         this.paymentRepository = paymentRepository;
         this.priceListRepository = priceListRepository;
     }
