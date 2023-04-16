@@ -1,15 +1,15 @@
 package com.mprzenzak.lab06.enums;
 
 public enum ServiceType {
-    ROUTER_INSTALLATION, ROUTER_REPAIR, ROUTER_UPGRADE, ROUTER_REPLACEMENT, ROUTER_REMOVAL;
+    OPTICAL_FIBER_100MB, OPTICAL_FIBER_500MB, OPTICAL_FIBER_1GBIT, INTERNET_WITH_TV, INTERNET_WITH_NETFLIX;
 
     public String getLabel() {
         return switch (this) {
-            case ROUTER_INSTALLATION -> "Instalacja routera";
-            case ROUTER_REPAIR -> "Naprawa routera";
-            case ROUTER_UPGRADE -> "Aktualizacja routera";
-            case ROUTER_REPLACEMENT -> "Wymiana routera";
-            case ROUTER_REMOVAL -> "Usunięcie routera";
+            case OPTICAL_FIBER_100MB -> "Światłowód 100Mb/s";
+            case OPTICAL_FIBER_500MB -> "Światłowód 500Mb/s";
+            case OPTICAL_FIBER_1GBIT -> "Światłowód 1 Gb/s";
+            case INTERNET_WITH_TV -> "Internet z telewizją";
+            case INTERNET_WITH_NETFLIX -> "Internet z Netflix";
         };
     }
 }

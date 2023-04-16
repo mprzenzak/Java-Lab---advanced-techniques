@@ -3,13 +3,17 @@ package com.mprzenzak.lab06.controllers;
 import com.mprzenzak.lab06.models.Invoice;
 import com.mprzenzak.lab06.models.InvoiceWrapper;
 import com.mprzenzak.lab06.repository.InvoiceRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,4 +53,18 @@ public class InvoiceController {
         return invoiceWrapper;
     }
 
+    @PostMapping("/invoices/register-payment")
+    @Transactional
+    public String registerPayment(@RequestParam("invoiceId") Long invoiceId, @RequestParam("paymentAmount") double paymentAmount) {
+        Optional<Invoice> invoiceOptional = invoiceRepository.findById(invoiceId);
+
+        if (invoiceOptional.isPresent()) {
+            Invoice invoice = invoiceOptional.get();
+            invoice.setAmount(invoice.getAmount() - paymentAmount);
+            invoice.setPaymentDate(LocalDateTime.now());
+            invoiceRepository.save(invoice);
+        }
+
+        return "redirect:/invoices";
+    }
 }

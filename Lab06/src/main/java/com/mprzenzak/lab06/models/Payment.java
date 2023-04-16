@@ -1,6 +1,5 @@
 package com.mprzenzak.lab06.models;
 
-import com.mprzenzak.lab06.enums.ServiceType;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -15,8 +14,7 @@ public class Payment {
     private int amount;
 
     @OneToOne
-    @JoinColumn(name = "payment_id")
-    private Invoice payment;
+    private Invoice invoice;
 
     public Long getId() {
         return id;
@@ -42,11 +40,11 @@ public class Payment {
         this.amount = amount;
     }
 
-    public Invoice getPayment() {
-        return payment;
+    public Invoice getInvoice() {
+        return invoice;
     }
 
-    public void setPayment(Invoice payment) {
-        this.payment = payment;
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 }
