@@ -14,7 +14,7 @@ public class Client {
     private String lastName;
     private String clientNumber;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Installation> installations;
 
     public Long getId() {

@@ -1,5 +1,8 @@
 package com.mprzenzak.lab06.repository;
 
+import com.mprzenzak.lab06.enums.ServiceType;
+import com.mprzenzak.lab06.models.Client;
+import com.mprzenzak.lab06.models.Installation;
 import com.mprzenzak.lab06.models.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
