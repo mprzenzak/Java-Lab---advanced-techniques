@@ -1,20 +1,18 @@
-package com.mprzenzak.lab06.respository;
+package com.mprzenzak.lab06.repository;
 
-import com.mprzenzak.lab06.models.Client;
+import com.mprzenzak.lab06.models.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
-    List<Client> findByClientNumber(String clientNumber);
+public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     @Modifying
     @Query("update Client c set c.firstName = ?2 where c.id = ?1")
     public void updateClient(int i, String clientNumber);
 
-    public Optional<Client> findById(Long id);
+    public Optional<Invoice> findById(Long id);
 }

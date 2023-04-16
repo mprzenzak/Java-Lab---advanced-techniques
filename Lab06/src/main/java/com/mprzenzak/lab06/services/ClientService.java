@@ -1,7 +1,7 @@
 package com.mprzenzak.lab06.services;
 
 import com.mprzenzak.lab06.models.Client;
-import com.mprzenzak.lab06.respository.ClientRepository;
+import com.mprzenzak.lab06.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

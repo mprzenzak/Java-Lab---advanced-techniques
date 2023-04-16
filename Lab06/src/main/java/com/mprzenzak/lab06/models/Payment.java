@@ -1,9 +1,9 @@
 package com.mprzenzak.lab06.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.mprzenzak.lab06.enums.ServiceType;
+import jakarta.persistence.*;
+
+import java.util.Date;
 
 @Entity
 public class Payment {
@@ -11,5 +11,10 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Date paymentDate;
+    private int amount;
 
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private Invoice payment;
 }

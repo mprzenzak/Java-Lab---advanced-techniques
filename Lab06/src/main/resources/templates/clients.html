@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Clients</title>
+    <title>Klienci</title>
 </head>
 <body>
 <h1>Lista klientów</h1>
@@ -11,15 +11,34 @@
         <th>ID</th>
         <th>Imię</th>
         <th>Nazwisko</th>
-        <th>Edytuj</th>
+        <th>Edytuj dane osoby</th>
+        <th></th>
     </tr>
     <tr th:each="client : ${clients}">
         <td th:text="${client.id}"></td>
         <td th:text="${client.firstName}"></td>
         <td th:text="${client.lastName}"></td>
         <td><a th:href="@{/clients/edit/{id}(id=${client.id})}">Edytuj</a></td>
+        <td><a th:href="@{/clients/add_installation/{id}(id=${client.id})}">Wprowadź dane instalacji</a></td>
     </tr>
 </table>
+<a href="/" th:href="@{/clients/add}">Dodaj klienta</a>
 <a href="/" th:href="@{/}">Wróć do strony głównej</a>
 </body>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
 </html>

@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Dodaj klienta</h1>
-<form action="#" th:action="@{/add}" th:object="${client}" method="post">
+<form action="#" th:action="@{/clients/add}" th:object="${client}" method="post">
     <label for="firstName">Imię:</label>
     <input type="text" id="firstName" th:field="*{firstName}"/>
     <br/>

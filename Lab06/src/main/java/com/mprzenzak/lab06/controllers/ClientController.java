@@ -1,7 +1,7 @@
 package com.mprzenzak.lab06.controllers;
 
 import com.mprzenzak.lab06.models.Client;
-import com.mprzenzak.lab06.respository.ClientRepository;
+import com.mprzenzak.lab06.repository.ClientRepository;
 import com.mprzenzak.lab06.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,17 +18,17 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping("/add")
+    @GetMapping("/clients/add")
     public String showAddClientForm(Model model) {
         model.addAttribute("client", new Client());
-        return "add-client";
+        return "add_client";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/clients/add")
     public String addClient(@ModelAttribute Client client, Model model) {
         clientService.save(client);
-        model.addAttribute("message", "Klient dodany pomyślnie");
-        return "add-client";
+        model.addAttribute("clients", clientRepository.findAll());
+        return "clients";
     }
 
     @Autowired
