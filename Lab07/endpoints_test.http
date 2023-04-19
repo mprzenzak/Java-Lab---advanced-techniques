@@ -1,0 +1,88 @@
+### Get all clients
+GET http://localhost:8080/api/clients
+
+### Add a new client
+POST http://localhost:8080/api/clients
+Content-Type: application/json
+
+{
+  "firstName": "Marian",
+  "lastName": "Słoń",
+  "clientNumber": "JD123456"
+}
+
+### Get all installations
+GET http://localhost:8080/api/installations
+
+### Add a new installation
+POST http://localhost:8080/api/installations
+Content-Type: application/json
+
+{
+  "address": "Krakowska 223",
+  "routerNumber": "xyz000",
+  "serviceType": "OPTICAL_FIBER_500MB",
+  "client": {
+    "id": 1
+  }
+}
+
+### Update an existing installation
+PUT http://localhost:8080/api/installations/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "address": "Warszawska 12",
+  "routerNumber": "PPaa11",
+  "serviceType": "OPTICAL_FIBER_1000MB",
+  "client": {
+    "id": 1
+  }
+}
+
+### Get all invoices
+GET http://localhost:8080/api/invoices
+
+### Save updated invoices
+POST http://localhost:8080/api/invoices/save
+Content-Type: application/json
+
+{
+  "invoices": [
+    {
+      "id": 1,
+      "amount": 10000.00,
+      "paymentDate": "2023-05-01T12:00:00",
+      "installation": {
+        "id": 1
+      }
+    }
+  ]
+}
+
+### Register payment for an invoice
+POST http://localhost:8080/api/invoices/register-payment
+Content-Type: application/json
+
+{
+  "invoiceId": 1,
+  "paymentAmount": 50.00
+}
+
+### Get price list
+GET http://localhost:8080/api/pricelist
+
+### Save updated price list
+POST http://localhost:8080/api/pricelist/save
+Content-Type: application/json
+
+{
+  "prices": [
+    {
+      "id": 1,
+      "serviceType": "OPTICAL_FIBER_100MB",
+      "price": 49.99
+    }
+  ]
+}

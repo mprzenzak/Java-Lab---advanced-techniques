@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj instalację</title>
+</head>
+<body>
+<h1>Dodaj instalację</h1>
+<form action="#" th:action="@{/clients/add_installation/{id}(id=${client_id})}" th:object="${installation}" method="post">
+    <label for="address">Adres:</label>
+    <input type="text" id="address" th:field="*{address}"/>
+    <br/>
+    <label for="routerNumber">Numer routera:</label>
+    <input type="text" id="routerNumber" th:field="*{routerNumber}"/>
+    <br/>
+    <label for="serviceType">Typ usługi:</label>
+    <select id="serviceType" th:field="*{serviceType}">
+        <option th:each="type : ${T(com.mprzenzak.lab06.enums.ServiceType).values()}" th:value="${type}" th:text="${type.label}"></option>
+    </select>
+    <br/>
+    <input type="submit" value="Dodaj instalację"/>
+</form>
+</body>
+</html>

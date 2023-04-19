@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista instalacji</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<h1>Lista instalacji</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Adres</th>
+        <th>Numer routera</th>
+        <th>Typ usługi</th>
+        <th>Imię i nazwisko klienta</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="installation : ${installations}">
+        <td th:text="${installation.id}"></td>
+        <td th:text="${installation.address}"></td>
+        <td th:text="${installation.routerNumber}"></td>
+        <td th:text="${installation.serviceType.label}"></td>
+        <td th:text="${installation.client.firstName} + ' ' + ${installation.client.lastName}"></td>
+    </tr>
+    </tbody>
+</table>
+<a href="/" th:href="@{/}">Wróć do strony głównej</a>
+</body>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</html>
