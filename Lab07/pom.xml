@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.mprzenzak</groupId>
-    <artifactId>Lab06</artifactId>
+    <artifactId>Lab07</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Lab06</name>
-    <description>Lab06</description>
+    <name>Lab07</name>
+    <description>Lab07</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -70,7 +70,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.mprzenzak.lab06.Lab06Application</mainClass>
+                            <mainClass>com.mprzenzak.lab07.Lab07Application</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
