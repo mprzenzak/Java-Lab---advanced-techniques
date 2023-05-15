@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<bip.poznan.pl>
+    <data>
+        <testowy_tag>jakiś tekst</testowy_tag>
+        <karty_informacyjne>
+            <size>50</size>
+            <total_size>40645</total_size>
+            <items>
+                <karta_informacyjna>
+                    <link>https://bip.poznan.pl/bip/karty_informacyjne.html</link>
+                    <id>OS_NT00440B96</id>
+                    <data>2023-04-28</data>
+                    <skrot_organizacja>WOS</skrot_organizacja>
+                    <komponent_srodowiska>decyzje środowiskowe</komponent_srodowiska>
+                    <typ_karty>A</typ_karty>
+                    <rodzaj_karty>wnioski o wydanie decyzji</rodzaj_karty>
+                    <nr_wpisu>87708</nr_wpisu>
+                    <znak_sprawy>KSr-V.6220.1.127.2023</znak_sprawy>
+                    <dane_wnioskodawcy>Nivea Polska Sp z o. o GNIEŹNIEŃSKA 32, 61-021 POZNAŃ</dane_wnioskodawcy>
+                </karta_informacyjna>
+            </items>
+        </karty_informacyjne>
+    </data>
+</bip.poznan.pl>
