@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.collections.*?>
+
+<VBox fx:id="vbox" xmlns:fx="http://javafx.com/fxml">
+    <Button fx:id="transformButton" text="Transform to HTML"/>
+    <Button fx:id="saveButton" text="Save"/>
+    <TableView fx:id="table" editable="true">
+        <columns>
+            <TableColumn fx:id="idColumn" text="id"/>
+            <TableColumn fx:id="linkColumn" text="link"/>
+            <TableColumn fx:id="dataColumn" text="data"/>
+            <TableColumn fx:id="skrotOrganizacjaColumn" text="skrotOrganizacja"/>
+            <TableColumn fx:id="komponentSrodowiskaColumn" text="komponentSrodowiska"/>
+            <TableColumn fx:id="typKartyColumn" text="typKarty"/>
+            <TableColumn fx:id="rodzajKartyColumn" text="rodzajKarty"/>
+            <TableColumn fx:id="nrWpisuColumn" text="nrWpisu"/>
+            <TableColumn fx:id="znakSprawyColumn" text="znakSprawy"/>
+            <TableColumn fx:id="daneWnioskodawcyColumn" text="daneWnioskodawcy"/>
+        </columns>
+    </TableView>
+</VBox>
