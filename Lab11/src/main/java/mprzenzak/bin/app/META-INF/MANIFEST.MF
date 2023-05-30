@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Created-By: 17.0.6 (Oracle Corporation)
+Main-Class: App
+Multi-Release: true
+
