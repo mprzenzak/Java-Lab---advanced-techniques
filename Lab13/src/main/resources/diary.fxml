@@ -1,0 +1,32 @@
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?language javascript?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          hgap="10" vgap="10" alignment="CENTER" >
+
+    <fx:script>
+        function generateDiaryEntry(event) {
+            var dateField = event.source.scene.lookup("#dateField");
+            var nameField = event.source.scene.lookup("#nameField");
+            var outputField = event.source.scene.lookup("#outputField");
+
+            var template = "Dzisiejsza data: {DATE}, Imię: {NAME}\n\nZapis z dnia: {DATE}";
+
+            outputField.text = template.replace(/{DATE}/g, dateField.text).replace(/{NAME}/g, nameField.text);
+        }
+    </fx:script>
+
+    <Label text="Podaj datę:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <TextField fx:id="dateField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+    <Label text="Podaj imię:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <Button text="Generuj wpis do pamiętnika" GridPane.columnIndex="1" GridPane.rowIndex="2"
+            onAction="generateDiaryEntry(event)"/>
+
+    <TextArea fx:id="outputField" editable="false" GridPane.columnIndex="0" GridPane.rowIndex="3"
+              GridPane.columnSpan="2" wrapText="true"/>
+
+</GridPane>

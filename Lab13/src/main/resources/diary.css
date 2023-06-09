@@ -1,0 +1,12 @@
+.root {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+}
+
+.text-area, .text-field {
+    -fx-pref-width: 300;
+}
+
+.button {
+    -fx-pref-width: 300;
+}
